@@ -12,9 +12,15 @@ class ClientProfile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          CircleAvatar(
-              radius: 23, backgroundImage: AssetImage(client.photoUrl)),
-         const SizedBox(width: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Container(
+              height: 50,
+              width: 50,
+              child: Image.asset(client.photoUrl),
+            ),
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,9 +30,9 @@ class ClientProfile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   client.name,
-                  style:const TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(

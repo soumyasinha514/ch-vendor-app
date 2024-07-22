@@ -124,6 +124,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                             return 'please enter valid GST Number!';
                           }
                           return null;
+                          
                         },
                         decoration: const InputDecoration(
                           hintText: 'Enter GST Number*',
@@ -291,7 +292,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       ref.read(vendorProvider.notifier).updateVendor(Vendor(
-                          name: _nameController.text,
+                          name: _nameController.text.toUpperCase(),
                           workshop_name: _workshopNameController.text,
                           location: _locationController.text));
                       Navigator.of(context).push(MaterialPageRoute(

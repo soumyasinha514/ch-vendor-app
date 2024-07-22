@@ -6,7 +6,7 @@ class Client {
   Client({required this.photoUrl, required this.name, required this.address});
 
   Client.charlie()
-      : name = 'Charlie',
+      : name = 'Charlie Puth',
         photoUrl = 'assets/images/charlie.png',
         address = 'G-sector, Treasure Fantasy, Indore';
 }

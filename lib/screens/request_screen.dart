@@ -13,11 +13,7 @@ class RequestScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title:Text('Requests',style: TextStyle(fontWeight: FontWeight.bold),),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back)),
+       
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

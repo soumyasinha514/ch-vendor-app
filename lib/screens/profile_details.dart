@@ -1,4 +1,8 @@
+import 'package:bma_cars/models/garage_details.dart';
+import 'package:bma_cars/providers/garage_detail_provider.dart';
+import 'package:bma_cars/screens/garage_detail.dart';
 import 'package:bma_cars/screens/home.dart';
+import 'package:bma_cars/screens/tabs_screen.dart';
 import 'package:bma_cars/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +33,8 @@ class ProfileDetailScreen extends ConsumerStatefulWidget {
 
 class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _infoController = TextEditingController();
+  final TextEditingController _numController = TextEditingController();
 
   final formatter = DateFormat.yMd();
   Gender? _selectedGender;
@@ -57,7 +63,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
 
   Future _pickDate() async {
     final pickedDate = await showDatePicker(
-        context: context, firstDate: DateTime(2000), lastDate: DateTime.now());
+        context: context, firstDate: DateTime(1900), lastDate: DateTime.now());
     setState(() {
       _dateController.text = formatter.format(pickedDate!);
     });
@@ -86,7 +92,10 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Complete Your Profile',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Complete Your Profile',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -106,7 +115,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                     Row(
                       children: [
                         UserProfile(),
-                       // Spacer(),
+                        // Spacer(),
                         ElevatedButton(
                             onPressed: _pickProfilePhoto,
                             child: Text('Upload Photo'))
@@ -196,12 +205,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       height: 10,
                     ),
                     FormField(
-                      validator: (value) {
+                     /* validator: (value) {
                         if (value == null) {
                           return 'please choose your gender!';
                         }
                         return null;
-                      },
+                      },*/
                       builder: (FormFieldState<Gender> state) {
                         return Container(
                           padding: EdgeInsets.all(2),
@@ -269,14 +278,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       Text('Other')
                                     ],
                                   ),
-                                  if (state.hasError)
+                                 /* if (state.hasError)
                                     Text(
                                       state.errorText!,
                                       style: TextStyle(
                                           color: const Color.fromARGB(
                                               255, 205, 20, 6),
                                           fontSize: 12),
-                                    ),
+                                    ),*/
                                 ],
                               ),
                             ],
@@ -298,12 +307,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       height: 10,
                     ),
                     FormField(
-                      validator: (value) {
+                      /*validator: (value) {
                         if (value == null) {
                           return 'please upload your garage photo!';
                         }
                         return null;
-                      },
+                      },*/
                       builder: (FormFieldState state) {
                         return Column(
                           children: [
@@ -331,14 +340,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                         _pickedGargePhoto!,
                                         fit: BoxFit.cover,
                                       )),
-                            if (state.hasError)
+                           /* if (state.hasError)
                               Text(
                                 state.errorText!,
                                 style: TextStyle(
                                     color:
                                         const Color.fromARGB(255, 205, 20, 6),
                                     fontSize: 12),
-                              ),
+                              ),*/
                           ],
                         );
                       },
@@ -350,8 +359,15 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       children: [
                         Column(
                           children: [
-                            Text('${vendor.workshop_name} Garage',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                            Text('${vendor.location}',style: TextStyle(fontSize: 11),)
+                            Text(
+                              '${vendor.workshop_name} Garage',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${vendor.location}',
+                              style: TextStyle(fontSize: 11),
+                            )
                           ],
                         ),
                         Spacer(),
@@ -364,6 +380,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       height: 10,
                     ),
                     TextFormField(
+                      controller: _numController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'please enter workers!';
@@ -383,6 +400,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                       height: 10,
                     ),
                     TextFormField(
+                      controller: _infoController,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'please add aditional info';
+                        }
+                      },
                       decoration: const InputDecoration(
                         hintText: 'Add Additional Information',
                         hintStyle: TextStyle(
@@ -447,9 +470,15 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      ref.read(garageDetailProvider.notifier).updateGarage(
+                          GarageDetails(
+                              garageImage: _pickedGargePhoto!.path,
+                              information: _infoController.text,
+                              numWorkers: _numController.text,
+                              selectedFacilityImageList: _selectedFacilities));
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
-                          return HomeScreen();
+                          return const TabsScreen();
                         },
                       ));
                     }

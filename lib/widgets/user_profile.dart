@@ -4,23 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bma_cars/providers/vendor_provider.dart';
 
 class UserProfile extends ConsumerWidget {
- 
-
   UserProfile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-  
-     final Vendor vendor = ref.watch(vendorProvider);
+    final Vendor vendor = ref.watch(vendorProvider);
     return Expanded(
       child: Row(
-        children: [
-          CircleAvatar(
-            radius: 23,
-            backgroundImage: vendor.profilePhoto == null
-                ? const AssetImage('assets/images/placeholder.png')
-                : FileImage(vendor.profilePhoto!),
-          ),
+        children: [CircleAvatar(radius: 23,
+          backgroundImage:  vendor.profilePhoto == null
+                  ? AssetImage('assets/images/placeholder.png')
+                  : FileImage(vendor.profilePhoto!),)
+          ,
+         
           SizedBox(width: 10),
           Expanded(
             child: Column(

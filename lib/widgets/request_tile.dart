@@ -76,9 +76,49 @@ class RequestTile extends ConsumerWidget {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Image.asset(request.vehicleImages[index]),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(backgroundColor: Color.fromARGB(216, 240, 238, 238),
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                        child: Container(
+                                          height: 200,
+                                          width: 200,
+                                          child: Image.asset(
+                                            fit: BoxFit.cover,
+                                           
+                                              request.vehicleImages[index]),
+                                        )),
+                                    Positioned(
+                                      top: 20,
+                                      right: 18,
+                                        child: Container(
+                                          decoration: BoxDecoration(color: Color.fromARGB(255, 194, 21, 8)),
+                                          height: 40,
+                                          width: 40,
+                                          
+                                          child: Center(
+                                            child: IconButton(iconSize: 30,
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                icon: Icon(Icons.close,color: Colors.white,)),
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Image.asset(request.vehicleImages[index]),
+                        ),
                       ),
                     ],
                   );
@@ -86,6 +126,7 @@ class RequestTile extends ConsumerWidget {
               ),
             ),
           ),
+          SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
