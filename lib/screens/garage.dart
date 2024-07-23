@@ -1,16 +1,16 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:bma_cars/widgets/mechanic_profile.dart';
-import 'package:bma_cars/models/mechanic.dart';
+
 import 'package:bma_cars/models/garage.dart';
 import 'package:bma_cars/providers/bike_car_list_provider.dart';
-import 'package:bma_cars/widgets/mechanic_profile.dart';
+
 
 class GarageScreen extends ConsumerStatefulWidget {
-  GarageScreen({super.key});
+ const GarageScreen({super.key});
 
   @override
   ConsumerState<GarageScreen> createState() => _GarageScreenState();
@@ -34,14 +34,14 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bikeList = ref.watch(bikeListProvider);
-    final _carList = ref.watch(carListProvider);
+    final bikeList = ref.watch(bikeListProvider);
+    final carList = ref.watch(carListProvider);
 
     return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
+            title:const Text(
               'Garage',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -49,7 +49,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.arrow_back)),
+                icon: const Icon(Icons.arrow_back)),
             bottom: TabBar(
                 onTap: (value) {
                   if (value == 0) {
@@ -71,7 +71,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/images/r_bike.png'),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
@@ -89,7 +89,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/images/r_car.png'),
-                        SizedBox(
+                       const SizedBox(
                           width: 5,
                         ),
                         Text(
@@ -106,8 +106,8 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
           body: TabBarView(
             children: [
-              _buildBikeTab(_bikeList),
-              _buildCarTab(_carList),
+              _buildBikeTab(bikeList),
+              _buildCarTab(carList),
             ],
           ),
         ));
@@ -144,9 +144,9 @@ Widget _buildCarTab(List<Car> carList) {
 Widget buildBikeExpansionTile(Bike bike) {
   _GarageScreenState garage = _GarageScreenState();
   return ExpansionTile(
-    childrenPadding: EdgeInsets.all(15),
+    childrenPadding:const EdgeInsets.all(15),
     shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromARGB(151, 158, 158, 158)),
+        side:const BorderSide(color: Color.fromARGB(151, 158, 158, 158)),
         borderRadius: BorderRadius.circular(12)),
     title: Text(
       overflow: TextOverflow.ellipsis,
@@ -159,7 +159,7 @@ Widget buildBikeExpansionTile(Bike bike) {
     ),
     leading: ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Container(
+      child: SizedBox(
         height: 50,
         width: 50,
         child: Image.asset(bike.client.photoUrl),
@@ -167,7 +167,7 @@ Widget buildBikeExpansionTile(Bike bike) {
     ),
     subtitle: Text(garage._formatDateTime(bike.dateTime)),
     children: [
-      Container(
+      SizedBox(
         width: double.infinity,
         height: 144,
         child: ClipRRect(
@@ -177,7 +177,7 @@ Widget buildBikeExpansionTile(Bike bike) {
               fit: BoxFit.cover,
             )),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Row(
@@ -185,66 +185,66 @@ Widget buildBikeExpansionTile(Bike bike) {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
+             const Text(
                 'Bike Damage Image',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               Text(
                 bike.bikeModel,
-                style: TextStyle(
+                style:const TextStyle(
                     fontSize: 12, color: Color.fromARGB(255, 32, 29, 0)),
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Column(
             children: [
-              Text(
+              const Text(
                 'Condition',
                 style: TextStyle(
                     fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
               ),
               Text(
                 bike.condition,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               )
             ],
           )
         ],
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       ListTile(
-        title: Text(
+        title:const Text(
           'About Task',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           softWrap: true,
         ),
         subtitle: Text(
           bike.taskDesc,
-          style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
+          style: const TextStyle(fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
         ),
       ),
       MechanicProfile(mechanic: bike.mechanic),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Required parts',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          Container(
+          SizedBox(
             width: 362,
             height: 200,
             child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
                   childAspectRatio: 1,
                   crossAxisSpacing: 20,
@@ -266,9 +266,9 @@ Widget buildBikeExpansionTile(Bike bike) {
 Widget _buildCarExpansionTile(Car car) {
   _GarageScreenState garage = _GarageScreenState();
   return ExpansionTile(
-    childrenPadding: EdgeInsets.all(15),
+    childrenPadding: const EdgeInsets.all(15),
     shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color.fromARGB(151, 158, 158, 158)),
+        side: const BorderSide(color: Color.fromARGB(151, 158, 158, 158)),
         borderRadius: BorderRadius.circular(12)),
     title: Text(
       overflow: TextOverflow.ellipsis,
@@ -281,7 +281,7 @@ Widget _buildCarExpansionTile(Car car) {
     ),
     leading: ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Container(
+      child: SizedBox(
         height: 50,
         width: 50,
         child: Image.asset(car.client.photoUrl),
@@ -289,7 +289,7 @@ Widget _buildCarExpansionTile(Car car) {
     ),
     subtitle: Text(garage._formatDateTime(car.dateTime)),
     children: [
-      Container(
+      SizedBox(
         width: double.infinity,
         height: 144,
         child: ClipRRect(
@@ -299,7 +299,7 @@ Widget _buildCarExpansionTile(Car car) {
               fit: BoxFit.cover,
             )),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Row(
@@ -307,66 +307,66 @@ Widget _buildCarExpansionTile(Car car) {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Car Damage Image',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
               Text(
                 car.carModel,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 12, color: Color.fromARGB(255, 32, 29, 0)),
               )
             ],
           ),
-          Spacer(),
+         const Spacer(),
           Column(
             children: [
-              Text(
+             const Text(
                 'Condition',
                 style: TextStyle(
                     fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
               ),
               Text(
                 car.condition,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               )
             ],
           )
         ],
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       ListTile(
-        title: Text(
+        title:const Text(
           'About Task',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           softWrap: true,
         ),
         subtitle: Text(
           car.taskDesc,
-          style: TextStyle(fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
+          style:const TextStyle(fontSize: 13, color: Color.fromARGB(255, 32, 29, 0)),
         ),
       ),
        MechanicProfile(mechanic: car.mechanic),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Required parts',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          Container(
+         SizedBox(
             width: 362,
             height: 200,
             child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
                   childAspectRatio: 1,
                   crossAxisSpacing: 20,
