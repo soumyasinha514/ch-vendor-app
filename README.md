@@ -1,1 +1,2 @@
-# ch-vendor-app
+**Mechanics Industry Automation App**
+A vendor-side application designed for automobile and motorbike service providers to enhance customer interaction and service management. CARSHOME offers an organized solution for handling customer requests and generating quotations with ease. The app allows vendors to efficiently track customer requests and monitor the status of vehicles awaiting repair in their garage, ensuring a streamlined and user-friendly experience.
