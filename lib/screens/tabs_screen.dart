@@ -4,8 +4,6 @@ import 'package:bma_cars/screens/quotation_screen.dart';
 import 'package:bma_cars/screens/notification.dart';
 import 'package:flutter/material.dart';
 
-
-
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
@@ -16,31 +14,50 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  var _selectedPageIndex = 0;
+  late PageController _pageController;
+  int _selectedPageIndex = 0;
 
-  void _selectPage(index) {
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedPageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget activeScreen = HomeScreen();
-
-    if (_selectedPageIndex == 1) {
-      activeScreen = QuotationScreen();
-    }
-    if (_selectedPageIndex == 2) {
-      activeScreen = NotificationScreen();
-    }
-    if (_selectedPageIndex == 3) {
-      activeScreen = ProfileScreen();
-    }
-
     return Scaffold(
-        body: activeScreen,
-        bottomNavigationBar: NavigationBar(
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedPageIndex = index;
+          });
+        },
+        children: [
+          HomeScreen(),
+          QuotationScreen(),
+          NotificationScreen(),
+          ProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: NavigationBar(
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           onDestinationSelected: _selectPage,
           selectedIndex: _selectedPageIndex,
@@ -86,6 +103,13 @@ class _TabsScreenState extends State<TabsScreen> {
                 ),
                 label: 'Profile')
           ],
-        ));
+        )
+
+
+
+
+
+
+    );
   }
 }

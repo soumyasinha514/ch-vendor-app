@@ -10,21 +10,21 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-       
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 10, left: 8),
+              child: Text(
+                'Profile',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
             Row(
               children: [
                 UserProfile(),
-             
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.of(context).push(

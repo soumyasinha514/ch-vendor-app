@@ -1,7 +1,6 @@
 import 'package:bma_cars/models/garage_details.dart';
 import 'package:bma_cars/providers/garage_detail_provider.dart';
-import 'package:bma_cars/screens/garage_detail.dart';
-import 'package:bma_cars/screens/home.dart';
+
 import 'package:bma_cars/screens/tabs_screen.dart';
 import 'package:bma_cars/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,9 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _infoController = TextEditingController();
   final TextEditingController _numController = TextEditingController();
+  final _facilitiesFieldKey = GlobalKey<FormFieldState>();
 
+  final int MIN_FACILITIES_REQUIRED = 1;
   final formatter = DateFormat.yMd();
   Gender? _selectedGender;
   final _picker = ImagePicker();
@@ -59,6 +60,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
         _selectedFacilities.add(facility);
       }
     });
+    _facilitiesFieldKey.currentState?.didChange(_selectedFacilities);
   }
 
   Future _pickDate() async {
@@ -115,7 +117,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                     Row(
                       children: [
                         UserProfile(),
-                        // Spacer(),
                         ElevatedButton(
                             onPressed: _pickProfilePhoto,
                             child: Text('Upload Photo'))
@@ -204,13 +205,13 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    FormField(
-                     /* validator: (value) {
-                        if (value == null) {
+                    FormField<Gender>(
+                      validator: (value) {
+                        if (_selectedGender == null) {
                           return 'please choose your gender!';
                         }
                         return null;
-                      },*/
+                      },
                       builder: (FormFieldState<Gender> state) {
                         return Container(
                           padding: EdgeInsets.all(2),
@@ -278,14 +279,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                       Text('Other')
                                     ],
                                   ),
-                                 /* if (state.hasError)
+                                  if (state.hasError)
                                     Text(
                                       state.errorText!,
                                       style: TextStyle(
                                           color: const Color.fromARGB(
                                               255, 205, 20, 6),
                                           fontSize: 12),
-                                    ),*/
+                                    ),
                                 ],
                               ),
                             ],
@@ -306,14 +307,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    FormField(
-                      /*validator: (value) {
-                        if (value == null) {
+                    FormField<File>(
+                      validator: (value) {
+                        if (_pickedGargePhoto == null) {
                           return 'please upload your garage photo!';
                         }
                         return null;
-                      },*/
-                      builder: (FormFieldState state) {
+                      },
+                      builder: (FormFieldState<File> state) {
                         return Column(
                           children: [
                             Container(
@@ -340,14 +341,14 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                         _pickedGargePhoto!,
                                         fit: BoxFit.cover,
                                       )),
-                           /* if (state.hasError)
+                            if (state.hasError)
                               Text(
                                 state.errorText!,
                                 style: TextStyle(
                                     color:
                                         const Color.fromARGB(255, 205, 20, 6),
                                     fontSize: 12),
-                              ),*/
+                              ),
                           ],
                         );
                       },
@@ -418,47 +419,76 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                     SizedBox(
                       height: 25,
                     ),
-                    const Text(
-                      'Select Facilities',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 362,
-                      height: 200,
-                      child: GridView(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                        children: [
-                          for (int i = 184; i <= 189; i++)
-                            GestureDetector(
-                              onTap: () {
-                                _toggleSelection(_facilityMap[
-                                    'assets/images/facilities/Frame ${i}.png']!);
-                              },
-                              child: Card(
-                                color: _selectedFacilities.contains(_facilityMap[
-                                        'assets/images/facilities/Frame ${i}.png'])
-                                    ? Color.fromARGB(255, 243, 192, 168)
-                                    : null,
-                                child: Image.asset(
-                                    'assets/images/facilities/Frame ${i}.png'),
+                    FormField<List<Facility>>(
+                      key: ValueKey('facilities'),
+                      initialValue: _selectedFacilities,
+                      validator: (facilities) {
+                        if (facilities == null ||
+                            facilities.length < MIN_FACILITIES_REQUIRED) {
+                          return 'Please select at least $MIN_FACILITIES_REQUIRED facility';
+                        }
+                        return null;
+                      },
+                      builder: (FormFieldState<List<Facility>> state) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Select Facilities',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                            )
-                        ],
-                      ),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              width: 362,
+                              height: 160,
+                              child: GridView(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        childAspectRatio: 3 / 2,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10),
+                                children: [
+                                  for (int i = 184; i <= 189; i++)
+                                    GestureDetector(
+                                      onTap: () {
+                                        _toggleSelection(_facilityMap[
+                                            'assets/images/facilities/Frame ${i}.png']!);
+                                        state.didChange(
+                                            _selectedFacilities); 
+                                      },
+                                      child: Card(
+                                        color: _selectedFacilities.contains(
+                                                _facilityMap[
+                                                    'assets/images/facilities/Frame ${i}.png'])
+                                            ? Color.fromARGB(255, 243, 192, 168)
+                                            : null,
+                                        child: Image.asset(
+                                            'assets/images/facilities/Frame ${i}.png'),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ),
+                            if (state.hasError)
+                              Text(
+                                state.errorText!,
+                                style: const TextStyle(
+                                    color:
+                                         Color.fromARGB(255, 205, 20, 6),
+                                    fontSize: 12),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
               ),
+              SizedBox(height: 10,),
               SizedBox(
                 width: 339,
                 height: 49,
@@ -470,6 +500,11 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      if (_selectedFacilities.length <
+                          MIN_FACILITIES_REQUIRED) {
+                       
+                        return;
+                      }
                       ref.read(garageDetailProvider.notifier).updateGarage(
                           GarageDetails(
                               garageImage: _pickedGargePhoto!.path,
@@ -481,6 +516,12 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                           return const TabsScreen();
                         },
                       ));
+                    } else {
+                      // Validation failed, scroll to the top of the form
+                      Scrollable.ensureVisible(
+                        _formKey.currentContext!,
+                        duration: Duration(milliseconds: 100),
+                      );
                     }
                   },
                   child: const Text(

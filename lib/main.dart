@@ -1,5 +1,9 @@
 
+import 'package:bma_cars/screens/profile.dart';
+import 'package:bma_cars/screens/profile_details.dart';
+import 'package:bma_cars/screens/quotation_screen.dart';
 import 'package:bma_cars/screens/splash.dart';
+import 'package:bma_cars/screens/notification.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +25,7 @@ class MyApp extends StatelessWidget {
        
         useMaterial3: true,
       ),
-      home: const SplashScreen()
+      home:  ProfileDetailScreen()
     );
   }
 }

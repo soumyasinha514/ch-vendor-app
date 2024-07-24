@@ -40,28 +40,48 @@ class NotificationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _list = ref.watch(notificationListProvider);
-    return Scaffold(appBar: AppBar(title: Text('Notifications',style: TextStyle(fontWeight: FontWeight.bold),),),
-    body: Padding(
-      padding: EdgeInsets.all(16),
-      child: ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index) {
-          return Material(elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Image.asset('assets/images/carhome.png'),
-                ),
-                subtitle: Text(_list[index].text,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 14),
-                softWrap: true,),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+           const Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 10, left: 8),
+              child: Text(
+                'Notifications',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-          );
-        },
+            Expanded(
+              child: ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (context, index) {
+                  return Material(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Image.asset('assets/images/carhome.png'),
+                        ),
+                        subtitle: Text(
+                          _list[index].text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 14),
+                          softWrap: true,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-    ),);
+    );
   }
 }

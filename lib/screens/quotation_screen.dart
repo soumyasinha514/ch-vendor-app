@@ -12,23 +12,37 @@ class QuotationScreen extends ConsumerWidget {
     final quotations = ref.watch(quotationListProvider);
 
     return Scaffold(
-      appBar: AppBar(
+     /* appBar: AppBar(
         title: Text(
           'Quotations',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       
-      ),
+      ),*/
       body: Padding(
         padding: EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: quotations.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: QuotationTile(quotation: quotations[index]),
-            );
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+              Padding(
+                        padding: const EdgeInsets.only(top: 30,bottom: 10,left: 8),
+                        child: Text(
+                          'Quotations',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: quotations.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: QuotationTile(quotation: quotations[index]),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

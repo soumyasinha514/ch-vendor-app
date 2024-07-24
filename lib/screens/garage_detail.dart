@@ -55,7 +55,7 @@ class _GarageDetailScreenState extends ConsumerState<GarageDetailScreen> {
   Widget build(BuildContext context) {
     final garageDetails = ref.watch(garageDetailProvider);
     final vendor = ref.watch(vendorProvider);
-    final File _file = File(garageDetails.garageImage.toString());
+    final File file = File(garageDetails.garageImage.toString());
     _workerController.text = garageDetails.numWorkers;
     _infoController.text = garageDetails.information;
 
@@ -79,11 +79,11 @@ class _GarageDetailScreenState extends ConsumerState<GarageDetailScreen> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Container(
+                child: SizedBox(
                   height: 144,
                   width: double.infinity,
                   child:  Image.file(
-                    _file ,
+                    file ,
                     fit: BoxFit.cover,
                   ) ,
                 ),
